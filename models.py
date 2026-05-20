@@ -1,54 +1,49 @@
-"""Data models for the Library Management System."""
 from datetime import datetime
-
+from typing import Optional
 
 class Book:
     """Represents a book in the library."""
-    
-    def __init__(self, book_id, title, author):
+    def __init__(self, book_id: str, title: str, author: str):
         self.book_id = book_id
         self.title = title
         self.author = author
         self.available = True
     
     def borrow(self):
-        """Mark the book as borrowed."""
+        """Mark book as borrowed."""
         if not self.available:
-            raise Exception("Book is already borrowed.")
+            raise ValueError("Book is already borrowed.")
         self.available = False
     
     def return_book(self):
-        """Mark the book as returned."""
-        if self.available:
-            raise Exception("Book is already available.")
+        """Mark book as available."""
         self.available = True
     
     def __repr__(self):
         status = "Available" if self.available else "Borrowed"
-        return f"{self.book_id} - {self.title} by {self.author} [{status}]"
+        return f"Book(ID: {self.book_id}, Title: {self.title}, Author: {self.author}, Status: {status})"
 
 
 class Member:
     """Represents a library member."""
-    
-    def __init__(self, member_id, name, email):
+    def __init__(self, member_id: str, name: str, email: str):
         self.member_id = member_id
         self.name = name
         self.email = email
+        self.registered_date = datetime.now()
     
     def __repr__(self):
-        return f"{self.member_id} - {self.name} ({self.email})"
+        return f"Member(ID: {self.member_id}, Name: {self.name}, Email: {self.email})"
 
 
 class Loan:
-    """Represents a book loan transaction."""
-    
-    def __init__(self, loan_id, book, member):
+    """Represents a book loan record."""
+    def __init__(self, loan_id: str, book: Book, member: Member):
         self.loan_id = loan_id
         self.book = book
         self.member = member
-        self.borrow_date = datetime.now()
-        self.return_date = None
+        self.borrowed_date = datetime.now()
+        self.return_date: Optional[datetime] = None
         self.is_active = True
     
     def close_loan(self):
@@ -58,4 +53,4 @@ class Loan:
     
     def __repr__(self):
         status = "Active" if self.is_active else "Closed"
-        return f"{self.loan_id} - {self.member.name} borrowed {self.book.title} [{status}]"
+        return f"Loan(ID: {self.loan_id}, Member: {self.member.name}, Book: {self.book.title}, Status: {status})"

@@ -1,5 +1,4 @@
-"""Custom exceptions for the Library Management System."""
-
+"""Custom exceptions for Library Management System."""
 
 class LibraryException(Exception):
     """Base exception for library operations."""
@@ -7,20 +6,20 @@ class LibraryException(Exception):
 
 
 class BookNotFoundError(LibraryException):
-    """Raised when a book is not found in the library."""
+    """Raised when a book is not found."""
     pass
 
 
 class MemberNotFoundError(LibraryException):
-    """Raised when a member is not found in the system."""
+    """Raised when a member is not found."""
     pass
 
 
 class BookUnavailableError(LibraryException):
-    """Raised when attempting to borrow a book that is already borrowed."""
+    """Raised when a book is already borrowed."""
     pass
 
 
 class InvalidLoanError(LibraryException):
-    """Raised when attempting invalid loan operations."""
+    """Raised when loan operations are invalid."""
     pass

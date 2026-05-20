@@ -1,4 +1,5 @@
-"""Service layer for library operations."""
+"""Library Service - Core business logic for library operations."""
+from typing import List, Dict
 from models import Book, Member, Loan
 from exceptions import (
     BookNotFoundError,
@@ -9,81 +10,92 @@ from exceptions import (
 
 
 class LibraryService:
-    """Service class handling all library operations."""
+    """Service class managing library operations."""
     
     def __init__(self):
-        self._books = {}  # Dictionary: book_id -> Book
-        self._members = {}  # Dictionary: member_id -> Member
-        self._loans = []  # List of Loan objects
+        self._books: Dict[str, Book] = {}
+        self._members: Dict[str, Member] = {}
+        self._loans: List[Loan] = []
         self._loan_counter = 0
     
-    # Feature 1: Add Book
-    def add_book(self, book_id, title, author):
-        """Add a new book to the library.
+    # ============ FEATURE 1: Add Book ============
+    def add_book(self, book_id: str, title: str, author: str) -> str:
+        """
+        Add a new book to the library.
         
         Args:
-            book_id: Unique identifier for the book
-            title: Title of the book
-            author: Author of the book
+            book_id: Unique book identifier
+            title: Book title
+            author: Book author
         
         Returns:
-            str: Success message
+            Success message
+        
+        Raises:
+            ValueError: If book already exists
         """
         if book_id in self._books:
-            raise Exception(f"Book with ID {book_id} already exists.")
+            raise ValueError(f"Book with ID {book_id} already exists.")
         
         book = Book(book_id, title, author)
         self._books[book_id] = book
-        return f"Book added: {title}"
+        return f"Book added successfully: '{title}' by {author}"
     
-    # Feature 2: Register Member
-    def register_member(self, member_id, name, email):
-        """Register a new member to the library.
+    # ============ FEATURE 2: Register Member ============
+    def register_member(self, member_id: str, name: str, email: str) -> str:
+        """
+        Register a new library member.
         
         Args:
-            member_id: Unique identifier for the member
-            name: Full name of the member
-            email: Email address of the member
+            member_id: Unique member identifier
+            name: Member name
+            email: Member email
         
         Returns:
-            str: Success message
+            Success message
+        
+        Raises:
+            ValueError: If member already exists
         """
         if member_id in self._members:
-            raise Exception(f"Member with ID {member_id} already exists.")
+            raise ValueError(f"Member with ID {member_id} already exists.")
         
         member = Member(member_id, name, email)
         self._members[member_id] = member
-        return f"Member registered: {name}"
+        return f"Member registered successfully: {name}"
     
-    # Feature 3: Borrow Book
-    def borrow_book(self, book_id, member_id):
-        """Member borrows a book from the library.
+    # ============ FEATURE 3: Borrow Book ============
+    def borrow_book(self, book_id: str, member_id: str) -> str:
+        """
+        Borrow a book for a member.
         
         Args:
             book_id: ID of the book to borrow
             member_id: ID of the member borrowing
         
         Returns:
-            str: Success message
+            Success message with loan details
         
         Raises:
-            BookNotFoundError: If book not found
-            MemberNotFoundError: If member not found
+            BookNotFoundError: If book doesn't exist
+            MemberNotFoundError: If member doesn't exist
             BookUnavailableError: If book is already borrowed
         """
-        # Lookup book
-        book = self._books.get(book_id)
-        if book is None:
-            raise BookNotFoundError("Book not found.")
+        # Check if book exists
+        if book_id not in self._books:
+            raise BookNotFoundError(f"Book not found: {book_id}")
         
-        # Lookup member
-        member = self._members.get(member_id)
-        if member is None:
-            raise MemberNotFoundError("Member not found.")
+        book = self._books[book_id]
+        
+        # Check if member exists
+        if member_id not in self._members:
+            raise MemberNotFoundError(f"Member not found: {member_id}")
+        
+        member = self._members[member_id]
         
         # Check if book is available
         if not book.available:
-            raise BookUnavailableError("Book is already borrowed.")
+            raise BookUnavailableError(f"Book is already borrowed: {book.title}")
         
         # Borrow the book
         book.borrow()
@@ -94,75 +106,67 @@ class LibraryService:
         loan = Loan(loan_id, book, member)
         self._loans.append(loan)
         
-        return f"{member.name} borrowed {book.title}"
+        return f"{member.name} borrowed '{book.title}' (Loan ID: {loan_id})"
     
-    # Feature 4: Return Book
-    def return_book(self, book_id, member_id):
-        """Member returns a borrowed book to the library.
+    # ============ FEATURE 4: Return Book ============
+    def return_book(self, loan_id: str) -> str:
+        """
+        Return a borrowed book.
         
         Args:
-            book_id: ID of the book being returned
-            member_id: ID of the member returning
+            loan_id: ID of the loan to close
         
         Returns:
-            str: Success message
+            Success message
         
         Raises:
-            BookNotFoundError: If book not found
-            MemberNotFoundError: If member not found
-            InvalidLoanError: If no active loan exists
+            InvalidLoanError: If loan doesn't exist or is already closed
         """
-        # Lookup book
-        book = self._books.get(book_id)
-        if book is None:
-            raise BookNotFoundError("Book not found.")
-        
-        # Lookup member
-        member = self._members.get(member_id)
-        if member is None:
-            raise MemberNotFoundError("Member not found.")
-        
-        # Find active loan
-        active_loan = None
-        for loan in self._loans:
-            if (loan.book.book_id == book_id and 
-                loan.member.member_id == member_id and 
-                loan.is_active):
-                active_loan = loan
+        # Find the loan
+        loan = None
+        for l in self._loans:
+            if l.loan_id == loan_id:
+                loan = l
                 break
         
-        if active_loan is None:
-            raise InvalidLoanError(f"No active loan found for {member.name} and {book.title}.")
+        if loan is None:
+            raise InvalidLoanError(f"Loan not found: {loan_id}")
+        
+        if not loan.is_active:
+            raise InvalidLoanError(f"Loan already closed: {loan_id}")
         
         # Return the book
-        book.return_book()
-        active_loan.close_loan()
+        loan.book.return_book()
+        loan.close_loan()
         
-        return f"{member.name} returned {book.title}"
+        return f"Book '{loan.book.title}' returned by {loan.member.name} (Loan ID: {loan_id})"
     
-    # Feature 5: View Books
-    def view_books(self):
-        """Get list of all books in the library.
+    # ============ FEATURE 5: View Books ============
+    def view_books(self) -> List[Book]:
+        """
+        Get all books in the library.
         
         Returns:
-            list: List of Book objects
+            List of all books
         """
         return list(self._books.values())
     
-    # Feature 6: View Members
-    def view_members(self):
-        """Get list of all registered members.
+    # ============ FEATURE 6: View Members ============
+    def view_members(self) -> List[Member]:
+        """
+        Get all registered members.
         
         Returns:
-            list: List of Member objects
+            List of all members
         """
         return list(self._members.values())
     
-    # Feature 7: View Loans
-    def view_loans(self):
-        """Get list of all loans (active and closed).
+    # ============ FEATURE 7: View Loans ============
+    def view_loans(self) -> List[Loan]:
+        """
+        Get all loan records.
         
         Returns:
-            list: List of Loan objects
+            List of all loans
         """
-        return list(self._loans)
+        return self._loans
