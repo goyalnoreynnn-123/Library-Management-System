@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 880" font-family="Helvetica, Arial, sans-serif">
+  <style>
+    .title { font-size: 20px; font-weight: 700; fill: #1a1a1a; }
+    .subtitle { font-size: 12px; fill: #555; }
+    .shape { fill: #ffffff; stroke: #1a1a1a; stroke-width: 2; }
+    .start-end { fill: #e8f4ea; stroke: #2d6a4f; stroke-width: 2; }
+    .process { fill: #eaf2fb; stroke: #1d4ed8; stroke-width: 2; }
+    .io { fill: #fdf3e7; stroke: #b45309; stroke-width: 2; }
+    .label { font-size: 13px; fill: #1a1a1a; text-anchor: middle; }
+    .label-b { font-size: 13px; fill: #1a1a1a; text-anchor: middle; font-weight: 600; }
+    .arrow { stroke: #1a1a1a; stroke-width: 1.8; fill: none; }
+  </style>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1a1a1a"/>
+    </marker>
+  </defs>
+
+  <rect width="700" height="880" fill="#ffffff"/>
+  <text x="350" y="40" class="title" text-anchor="middle">1. Add Book — Flowchart</text>
+  <text x="350" y="60" class="subtitle" text-anchor="middle">main.py → add_book() → LibraryService.add_book()</text>
+
+  <!-- Start -->
+  <ellipse cx="350" cy="110" rx="80" ry="28" class="start-end"/>
+  <text x="350" y="115" class="label-b">Start</text>
+
+  <line x1="350" y1="138" x2="350" y2="170" class="arrow" marker-end="url(#arr)"/>
+
+  <!-- Show menu / choose 1 -->
+  <rect x="220" y="170" width="260" height="50" rx="4" class="process"/>
+  <text x="350" y="195" class="label">Display menu and read</text>
+  <text x="350" y="212" class="label">user choice = "1"</text>
+
+  <line x1="350" y1="220" x2="350" y2="252" class="arrow" marker-end="url(#arr)"/>
+
+  <!-- Input book_id -->
+  <polygon points="200,252 500,252 480,302 220,302" class="io"/>
+  <text x="350" y="282" class="label">Input: Book ID</text>
+
+  <line x1="350" y1="302" x2="350" y2="334" class="arrow" marker-end="url(#arr)"/>
+
+  <!-- Input title -->
+  <polygon points="200,334 500,334 480,384 220,384" class="io"/>
+  <text x="350" y="364" class="label">Input: Book Title</text>
+
+  <line x1="350" y1="384" x2="350" y2="416" class="arrow" marker-end="url(#arr)"/>
+
+  <!-- Input author -->
+  <polygon points="200,416 500,416 480,466 220,466" class="io"/>
+  <text x="350" y="446" class="label">Input: Book Author</text>
+
+  <line x1="350" y1="466" x2="350" y2="498" class="arrow" marker-end="url(#arr)"/>
+
+  <!-- Create Book object -->
+  <rect x="200" y="498" width="300" height="60" rx="4" class="process"/>
+  <text x="350" y="522" class="label">Create Book(book_id, title, author)</text>
+  <text x="350" y="540" class="label">with available = True</text>
+
+  <line x1="350" y1="558" x2="350" y2="590" class="arrow" marker-end="url(#arr)"/>
+
+  <!-- Store in dict -->
+  <rect x="200" y="590" width="300" height="60" rx="4" class="process"/>
+  <text x="350" y="614" class="label">Store book in _books dictionary</text>
+  <text x="350" y="632" class="label">key = book.book_id</text>
+
+  <line x1="350" y1="650" x2="350" y2="682" class="arrow" marker-end="url(#arr)"/>
+
+  <!-- Output -->
+  <polygon points="180,682 520,682 500,732 200,732" class="io"/>
+  <text x="350" y="712" class="label">Output: "Book added: {title}"</text>
+
+  <line x1="350" y1="732" x2="350" y2="770" class="arrow" marker-end="url(#arr)"/>
+
+  <!-- End -->
+  <ellipse cx="350" cy="800" rx="80" ry="28" class="start-end"/>
+  <text x="350" y="805" class="label-b">End</text>
+
+  <!-- Legend -->
+  <g transform="translate(40,820)">
+    <rect x="0" y="0" width="22" height="14" class="start-end"/>
+    <text x="28" y="11" font-size="11" fill="#333">Start/End</text>
+    <rect x="100" y="0" width="22" height="14" class="process"/>
+    <text x="128" y="11" font-size="11" fill="#333">Process</text>
+    <polygon points="200,0 222,0 218,14 196,14" class="io"/>
+    <text x="228" y="11" font-size="11" fill="#333">Input/Output</text>
+  </g>
+</svg>

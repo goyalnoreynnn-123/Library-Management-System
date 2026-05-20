@@ -1,0 +1,158 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 1280" font-family="Helvetica, Arial, sans-serif">
+  <style>
+    .title { font-size: 20px; font-weight: 700; fill: #1a1a1a; }
+    .subtitle { font-size: 12px; fill: #555; }
+    .start-end { fill: #e8f4ea; stroke: #2d6a4f; stroke-width: 2; }
+    .process { fill: #eaf2fb; stroke: #1d4ed8; stroke-width: 2; }
+    .io { fill: #fdf3e7; stroke: #b45309; stroke-width: 2; }
+    .decision { fill: #fef2f2; stroke: #b91c1c; stroke-width: 2; }
+    .error { fill: #fde8e8; stroke: #991b1b; stroke-width: 2; }
+    .label { font-size: 13px; fill: #1a1a1a; text-anchor: middle; }
+    .label-b { font-size: 13px; fill: #1a1a1a; text-anchor: middle; font-weight: 600; }
+    .small { font-size: 11px; fill: #1a1a1a; text-anchor: middle; }
+    .arrow { stroke: #1a1a1a; stroke-width: 1.8; fill: none; }
+    .yes-no { font-size: 12px; fill: #1a1a1a; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1a1a1a"/>
+    </marker>
+  </defs>
+
+  <rect width="980" height="1280" fill="#ffffff"/>
+  <text x="490" y="40" class="title" text-anchor="middle">3. Borrow Book — Flowchart</text>
+  <text x="490" y="60" class="subtitle" text-anchor="middle">main.py → borrow_book() → LibraryService.borrow_book()</text>
+
+  <!-- Start -->
+  <ellipse cx="490" cy="110" rx="80" ry="28" class="start-end"/>
+  <text x="490" y="115" class="label-b">Start</text>
+
+  <line x1="490" y1="138" x2="490" y2="170" class="arrow" marker-end="url(#arr)"/>
+
+  <!-- choose 3 -->
+  <rect x="360" y="170" width="260" height="50" rx="4" class="process"/>
+  <text x="490" y="195" class="label">Display menu and read</text>
+  <text x="490" y="212" class="label">user choice = "3"</text>
+
+  <line x1="490" y1="220" x2="490" y2="252" class="arrow" marker-end="url(#arr)"/>
+
+  <!-- Input book id -->
+  <polygon points="340,252 640,252 620,302 360,302" class="io"/>
+  <text x="490" y="282" class="label">Input: Book ID</text>
+
+  <line x1="490" y1="302" x2="490" y2="334" class="arrow" marker-end="url(#arr)"/>
+
+  <!-- Input member id -->
+  <polygon points="340,334 640,334 620,384 360,384" class="io"/>
+  <text x="490" y="364" class="label">Input: Member ID</text>
+
+  <line x1="490" y1="384" x2="490" y2="416" class="arrow" marker-end="url(#arr)"/>
+
+  <!-- Lookup book -->
+  <rect x="340" y="416" width="300" height="50" rx="4" class="process"/>
+  <text x="490" y="446" class="label">book = _books.get(book_id)</text>
+
+  <line x1="490" y1="466" x2="490" y2="500" class="arrow" marker-end="url(#arr)"/>
+
+  <!-- Decision 1: book is None? -->
+  <polygon points="490,500 660,570 490,640 320,570" class="decision"/>
+  <text x="490" y="565" class="label-b">book is None?</text>
+  <text x="490" y="585" class="small">(book not found)</text>
+
+  <!-- YES → error -->
+  <line x1="320" y1="570" x2="180" y2="570" class="arrow" marker-end="url(#arr)"/>
+  <text x="240" y="562" class="yes-no">YES</text>
+  <rect x="40" y="540" width="280" height="60" rx="4" class="error"/>
+  <text x="180" y="565" class="label">Raise BookNotFoundError</text>
+  <text x="180" y="585" class="label">"Book not found."</text>
+
+  <!-- error to caught -->
+  <line x1="180" y1="600" x2="180" y2="1140" class="arrow"/>
+
+  <!-- NO continues down -->
+  <text x="500" y="660" class="yes-no">NO</text>
+  <line x1="490" y1="640" x2="490" y2="680" class="arrow" marker-end="url(#arr)"/>
+
+  <!-- Lookup member -->
+  <rect x="340" y="680" width="300" height="50" rx="4" class="process"/>
+  <text x="490" y="710" class="label">member = _members.get(member_id)</text>
+
+  <line x1="490" y1="730" x2="490" y2="762" class="arrow" marker-end="url(#arr)"/>
+
+  <!-- Decision 2: member is None? -->
+  <polygon points="490,762 660,830 490,898 320,830" class="decision"/>
+  <text x="490" y="825" class="label-b">member is None?</text>
+  <text x="490" y="845" class="small">(member not found)</text>
+
+  <!-- YES → error -->
+  <line x1="320" y1="830" x2="180" y2="830" class="arrow" marker-end="url(#arr)"/>
+  <text x="240" y="822" class="yes-no">YES</text>
+  <rect x="40" y="800" width="280" height="60" rx="4" class="error"/>
+  <text x="180" y="825" class="label">Raise MemberNotFoundError</text>
+  <text x="180" y="845" class="label">"Member not found."</text>
+  <line x1="180" y1="860" x2="180" y2="1140" class="arrow"/>
+
+  <text x="500" y="918" class="yes-no">NO</text>
+  <line x1="490" y1="898" x2="490" y2="938" class="arrow" marker-end="url(#arr)"/>
+
+  <!-- Decision 3: not book.available? -->
+  <polygon points="490,938 680,998 490,1058 300,998" class="decision"/>
+  <text x="490" y="993" class="label-b">book.available</text>
+  <text x="490" y="1013" class="label-b">is False?</text>
+
+  <!-- YES → error -->
+  <line x1="300" y1="998" x2="180" y2="998" class="arrow" marker-end="url(#arr)"/>
+  <text x="220" y="990" class="yes-no">YES</text>
+  <rect x="40" y="968" width="280" height="60" rx="4" class="error"/>
+  <text x="180" y="993" class="label">Raise BookUnavailableError</text>
+  <text x="180" y="1013" class="label">"Book is already borrowed."</text>
+  <line x1="180" y1="1028" x2="180" y2="1140" class="arrow"/>
+
+  <text x="500" y="1078" class="yes-no">NO</text>
+  <line x1="490" y1="1058" x2="490" y2="1098" class="arrow" marker-end="url(#arr)"/>
+
+  <!-- book.borrow + create loan -->
+  <rect x="710" y="1078" width="240" height="80" rx="4" class="process"/>
+  <text x="830" y="1102" class="label">book.borrow()</text>
+  <text x="830" y="1120" class="label">→ sets available = False</text>
+  <text x="830" y="1140" class="label">Generate loan_id "L{n:03}"</text>
+
+  <line x1="490" y1="1098" x2="490" y2="1138" class="arrow"/>
+  <line x1="490" y1="1138" x2="710" y2="1118" class="arrow" marker-end="url(#arr)"/>
+
+  <!-- Create Loan and append -->
+  <rect x="340" y="1098" width="300" height="60" rx="4" class="process"/>
+  <text x="490" y="1122" class="label">Create Loan(loan_id, book, member)</text>
+  <text x="490" y="1140" class="label">Append to _loans list</text>
+
+  <!-- Caught error joins back path -->
+  <polygon points="40,1140 320,1140 300,1190 60,1190" class="io"/>
+  <text x="180" y="1170" class="label">Output: error message</text>
+
+  <line x1="180" y1="1190" x2="180" y2="1218" class="arrow"/>
+  <line x1="180" y1="1218" x2="490" y2="1218" class="arrow"/>
+
+  <line x1="490" y1="1158" x2="490" y2="1180" class="arrow" marker-end="url(#arr)"/>
+
+  <!-- Output success -->
+  <polygon points="300,1180 680,1180 660,1218 320,1218" class="io"/>
+  <text x="490" y="1204" class="label">Output: "{member.name} borrowed {book.title}"</text>
+
+  <line x1="490" y1="1218" x2="490" y2="1240" class="arrow" marker-end="url(#arr)"/>
+
+  <!-- End -->
+  <ellipse cx="490" cy="1260" rx="60" ry="18" class="start-end"/>
+  <text x="490" y="1264" class="label-b">End</text>
+
+  <!-- Legend -->
+  <g transform="translate(700,1230)">
+    <rect x="0" y="0" width="20" height="12" class="process"/>
+    <text x="26" y="10" font-size="10" fill="#333">Process</text>
+    <polygon points="80,0 102,0 99,12 77,12" class="io"/>
+    <text x="106" y="10" font-size="10" fill="#333">I/O</text>
+    <polygon points="140,6 150,0 160,6 150,12" class="decision"/>
+    <text x="166" y="10" font-size="10" fill="#333">Decision</text>
+    <rect x="220" y="0" width="20" height="12" class="error"/>
+    <text x="246" y="10" font-size="10" fill="#333">Error</text>
+  </g>
+</svg>

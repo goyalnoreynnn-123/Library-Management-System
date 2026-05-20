@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1080" font-family="Helvetica, Arial, sans-serif">
+  <style>
+    .title { font-size: 20px; font-weight: 700; fill: #1a1a1a; }
+    .subtitle { font-size: 12px; fill: #555; }
+    .start-end { fill: #e8f4ea; stroke: #2d6a4f; stroke-width: 2; }
+    .process { fill: #eaf2fb; stroke: #1d4ed8; stroke-width: 2; }
+    .io { fill: #fdf3e7; stroke: #b45309; stroke-width: 2; }
+    .decision { fill: #fef2f2; stroke: #b91c1c; stroke-width: 2; }
+    .label { font-size: 13px; fill: #1a1a1a; text-anchor: middle; }
+    .label-b { font-size: 13px; fill: #1a1a1a; text-anchor: middle; font-weight: 600; }
+    .small { font-size: 11px; fill: #1a1a1a; text-anchor: middle; }
+    .arrow { stroke: #1a1a1a; stroke-width: 1.8; fill: none; }
+    .yes-no { font-size: 12px; fill: #1a1a1a; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1a1a1a"/>
+    </marker>
+  </defs>
+
+  <rect width="800" height="1080" fill="#ffffff"/>
+  <text x="400" y="40" class="title" text-anchor="middle">7. View Loans — Flowchart</text>
+  <text x="400" y="60" class="subtitle" text-anchor="middle">main.py → view_loans() → LibraryService.view_loans()</text>
+
+  <!-- Start -->
+  <ellipse cx="400" cy="110" rx="80" ry="28" class="start-end"/>
+  <text x="400" y="115" class="label-b">Start</text>
+  <line x1="400" y1="138" x2="400" y2="170" class="arrow" marker-end="url(#arr)"/>
+
+  <!-- choose 7 -->
+  <rect x="270" y="170" width="260" height="50" rx="4" class="process"/>
+  <text x="400" y="195" class="label">Display menu and read</text>
+  <text x="400" y="212" class="label">user choice = "7"</text>
+  <line x1="400" y1="220" x2="400" y2="252" class="arrow" marker-end="url(#arr)"/>
+
+  <!-- Get list -->
+  <rect x="240" y="252" width="320" height="60" rx="4" class="process"/>
+  <text x="400" y="276" class="label">loans = service.view_loans()</text>
+  <text x="400" y="294" class="label">→ list(_loans)</text>
+  <line x1="400" y1="312" x2="400" y2="344" class="arrow" marker-end="url(#arr)"/>
+
+  <!-- Decision: empty? -->
+  <polygon points="400,344 580,404 400,464 220,404" class="decision"/>
+  <text x="400" y="400" class="label-b">loans</text>
+  <text x="400" y="420" class="label-b">is empty?</text>
+
+  <text x="195" y="396" class="yes-no">YES</text>
+  <line x1="220" y1="404" x2="170" y2="404" class="arrow" marker-end="url(#arr)"/>
+
+  <polygon points="20,374 180,374 160,434 40,434" class="io"/>
+  <text x="100" y="408" class="label">Output:</text>
+  <text x="100" y="424" class="small">"No loans found."</text>
+  <line x1="100" y1="434" x2="100" y2="990" class="arrow" marker-end="url(#arr)"/>
+
+  <text x="410" y="486" class="yes-no">NO</text>
+  <line x1="400" y1="464" x2="400" y2="500" class="arrow" marker-end="url(#arr)"/>
+
+  <polygon points="260,500 540,500 520,550 280,550" class="io"/>
+  <text x="400" y="530" class="label">Output: "Loans:" header</text>
+  <line x1="400" y1="550" x2="400" y2="582" class="arrow" marker-end="url(#arr)"/>
+
+  <!-- Iterate -->
+  <rect x="240" y="582" width="320" height="50" rx="4" class="process"/>
+  <text x="400" y="612" class="label">For each loan in loans:</text>
+  <line x1="400" y1="632" x2="400" y2="664" class="arrow" marker-end="url(#arr)"/>
+
+  <!-- Decision: is_active? -->
+  <polygon points="400,664 580,724 400,784 220,724" class="decision"/>
+  <text x="400" y="720" class="label-b">loan.is_active</text>
+  <text x="400" y="740" class="label-b">is True?</text>
+
+  <!-- YES → "Active" -->
+  <text x="600" y="716" class="yes-no">YES</text>
+  <line x1="580" y1="724" x2="630" y2="724" class="arrow" marker-end="url(#arr)"/>
+  <rect x="630" y="694" width="150" height="60" rx="4" class="process"/>
+  <text x="705" y="718" class="label">status =</text>
+  <text x="705" y="736" class="label">"Active"</text>
+
+  <!-- NO → "Closed" -->
+  <text x="195" y="716" class="yes-no">NO</text>
+  <line x1="220" y1="724" x2="170" y2="724" class="arrow" marker-end="url(#arr)"/>
+  <rect x="20" y="694" width="150" height="60" rx="4" class="process"/>
+  <text x="95" y="718" class="label">status =</text>
+  <text x="95" y="736" class="label">"Closed"</text>
+
+  <!-- Merge to print -->
+  <line x1="705" y1="754" x2="705" y2="790" class="arrow"/>
+  <line x1="705" y1="790" x2="400" y2="790" class="arrow"/>
+  <line x1="95" y1="754" x2="95" y2="790" class="arrow"/>
+  <line x1="95" y1="790" x2="400" y2="790" class="arrow"/>
+  <line x1="400" y1="790" x2="400" y2="820" class="arrow" marker-end="url(#arr)"/>
+
+  <polygon points="140,820 660,820 640,870 160,870" class="io"/>
+  <text x="400" y="840" class="label">Output: "{loan_id} - {member.name} borrowed</text>
+  <text x="400" y="858" class="label">{book.title} [{status}]"</text>
+  <line x1="400" y1="870" x2="400" y2="900" class="arrow" marker-end="url(#arr)"/>
+
+  <!-- Loop back -->
+  <polygon points="400,900 540,930 400,960 260,930" class="decision"/>
+  <text x="400" y="928" class="small">more loans?</text>
+
+  <text x="555" y="924" class="yes-no">YES</text>
+  <line x1="540" y1="930" x2="620" y2="930" class="arrow"/>
+  <line x1="620" y1="930" x2="620" y2="600" class="arrow"/>
+  <line x1="620" y1="600" x2="560" y2="607" class="arrow" marker-end="url(#arr)"/>
+
+  <text x="400" y="980" class="yes-no">NO</text>
+  <line x1="400" y1="960" x2="400" y2="990" class="arrow" marker-end="url(#arr)"/>
+
+  <!-- End -->
+  <ellipse cx="400" cy="1020" rx="60" ry="20" class="start-end"/>
+  <text x="400" y="1024" class="label-b">End</text>
+  <line x1="100" y1="990" x2="400" y2="990" class="arrow"/>
+
+  <!-- Legend -->
+  <g transform="translate(600,1000)">
+    <rect x="0" y="0" width="20" height="12" class="process"/>
+    <text x="26" y="10" font-size="10" fill="#333">Process</text>
+    <polygon points="80,0 102,0 99,12 77,12" class="io"/>
+    <text x="106" y="10" font-size="10" fill="#333">I/O</text>
+    <polygon points="140,6 150,0 160,6 150,12" class="decision"/>
+    <text x="166" y="10" font-size="10" fill="#333">Decision</text>
+  </g>
+</svg>
